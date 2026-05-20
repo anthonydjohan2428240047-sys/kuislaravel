@@ -1,180 +1,315 @@
 <x-layout>
-    <div class="container mt-4">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card shadow-sm border-0 rounded-3">
-                    <div class="card-header bg-white py-3 border-bottom-0">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <h5 class="mb-0 fw-bold text-primary">
-                                    <i class="bi bi-pencil-square me-2"></i>Edit Fakultas
-                                </h5>
-                                <p class="text-muted small mb-0 mt-1">
-                                    Perbarui informasi data fakultas
+
+<div class="container py-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-8">
+
+            <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+
+                {{-- HEADER --}}
+                <div class="bg-primary bg-gradient text-white p-5">
+
+                    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+
+                        <div class="d-flex align-items-center">
+
+                            <div class="bg-white text-primary rounded-circle
+                                        d-flex align-items-center justify-content-center"
+                                 style="width:80px;height:80px;">
+
+                                <i class="bi bi-pencil-square fs-2"></i>
+
+                            </div>
+
+                            <div class="ms-4">
+
+                                <h2 class="fw-bold mb-1">
+                                    Edit Fakultas
+                                </h2>
+
+                                <p class="mb-0 opacity-75">
+                                    Perbarui informasi fakultas dengan mudah
                                 </p>
+
                             </div>
-                            <a href="/fakultas" class="btn btn-secondary btn-sm">
-                                <i class="bi bi-arrow-left me-1"></i>Kembali
-                            </a>
+
                         </div>
+
+                        <a href="/fakultas"
+                           class="btn btn-light rounded-pill px-4">
+
+                            <i class="bi bi-arrow-left me-1"></i>
+                            Kembali
+
+                        </a>
+
                     </div>
-                    
-                    {{-- PERBAIKAN: Alert untuk error validasi --}}
+
+                </div>
+
+                {{-- BODY --}}
+                <div class="card-body p-5">
+
+                    {{-- ALERT VALIDASI --}}
                     @if ($errors->any())
-                        <div class="alert alert-danger alert-dismissible fade show mx-3 mt-3" role="alert">
+
+                        <div class="alert alert-danger border-0 rounded-4 shadow-sm">
+
                             <div class="d-flex align-items-start">
-                                <i class="bi bi-exclamation-triangle-fill me-2 fs-5"></i>
-                                <div class="flex-grow-1">
-                                    <strong>Validasi Gagal!</strong>
+
+                                <i class="bi bi-exclamation-octagon-fill fs-4 me-3"></i>
+
+                                <div>
+
+                                    <strong>Terjadi Kesalahan</strong>
+
                                     <ul class="mb-0 mt-2 ps-3">
+
                                         @foreach ($errors->all() as $error)
+
                                             <li>{{ $error }}</li>
+
                                         @endforeach
+
                                     </ul>
+
                                 </div>
-                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+
                             </div>
+
                         </div>
+
                     @endif
 
-                    {{-- TAMBAHAN: Alert untuk error session --}}
-                    @if (session('error'))
-                        <div class="alert alert-danger alert-dismissible fade show mx-3 mt-3" role="alert">
-                            <div class="d-flex align-items-center">
-                                <i class="bi bi-x-circle-fill me-2 fs-5"></i>
-                                <span>{{ session('error') }}</span>
-                                <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert"></button>
-                            </div>
+                    {{-- ALERT SESSION --}}
+                    @if(session('success'))
+
+                        <div class="alert alert-success border-0 rounded-4 shadow-sm">
+
+                            <i class="bi bi-check-circle-fill me-2"></i>
+
+                            {{ session('success') }}
+
                         </div>
+
                     @endif
 
-                    {{-- TAMBAHAN: Alert untuk success session --}}
-                    @if (session('success'))
-                        <div class="alert alert-success alert-dismissible fade show mx-3 mt-3" role="alert">
-                            <div class="d-flex align-items-center">
-                                <i class="bi bi-check-circle-fill me-2 fs-5"></i>
-                                <span>{{ session('success') }}</span>
-                                <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert"></button>
-                            </div>
+                    @if(session('error'))
+
+                        <div class="alert alert-danger border-0 rounded-4 shadow-sm">
+
+                            <i class="bi bi-x-circle-fill me-2"></i>
+
+                            {{ session('error') }}
+
                         </div>
+
                     @endif
 
-                    <div class="card-body">
-                        <form action="/fakultas/{{ $fakultas->id }}" method="POST">
-                            @csrf
-                            @method("PUT")
-                            
-                            {{-- Nama Fakultas Field --}}
-                            <div class="mb-4">
-                                <label for="nama_fakultas" class="form-label fw-semibold">
-                                    <i class="bi bi-building me-1 text-primary"></i>Nama Fakultas <span class="text-danger">*</span>
-                                </label>
-                                <input 
-                                    name="nama_fakultas"
-                                    id="nama_fakultas"
+                    {{-- FORM --}}
+                    <form action="/fakultas/{{ $fakultas->id }}" method="POST">
+
+                        @csrf
+                        @method('PUT')
+
+                        {{-- NAMA FAKULTAS --}}
+                        <div class="mb-4">
+
+                            <label class="form-label fw-semibold mb-2">
+                                Nama Fakultas
+                            </label>
+
+                            <div class="input-group input-group-lg">
+
+                                <span class="input-group-text bg-light border-0">
+                                    <i class="bi bi-building text-primary"></i>
+                                </span>
+
+                                <input
                                     type="text"
+                                    name="nama_fakultas"
+                                    class="form-control border-0 bg-light @error('nama_fakultas') is-invalid @enderror"
                                     placeholder="Masukkan nama fakultas"
-                                    class="form-control form-control-lg @error('nama_fakultas') is-invalid @enderror"
                                     value="{{ old('nama_fakultas', $fakultas->nama_fakultas) }}"
                                     required
                                 >
-                                @error('nama_fakultas')
-                                    <div class="invalid-feedback">
-                                        <i class="bi bi-exclamation-circle me-1"></i>{{ $message }}
-                                    </div>
-                                @else
-                                    <div class="form-text">
-                                        <i class="bi bi-info-circle me-1"></i>
-                                        Contoh: Fakultas Ilmu Komputer, Fakultas Ekonomi, dll. Maksimal 100 karakter.
-                                    </div>
-                                @enderror
+
                             </div>
-                            
-                            {{-- Nama Dekan Field --}}
-                            <div class="mb-4">
-                                <label for="nama_dekan" class="form-label fw-semibold">
-                                    <i class="bi bi-person-badge me-1 text-success"></i>Nama Dekan <span class="text-danger">*</span>
-                                </label>
-                                <input 
-                                    name="nama_dekan"
-                                    id="nama_dekan"
+
+                            @error('nama_fakultas')
+
+                                <small class="text-danger">
+                                    {{ $message }}
+                                </small>
+
+                            @else
+
+                                <small class="text-muted">
+                                    Contoh: Fakultas Teknik, Fakultas Kedokteran
+                                </small>
+
+                            @enderror
+
+                        </div>
+
+                        {{-- NAMA DEKAN --}}
+                        <div class="mb-4">
+
+                            <label class="form-label fw-semibold mb-2">
+                                Nama Dekan
+                            </label>
+
+                            <div class="input-group input-group-lg">
+
+                                <span class="input-group-text bg-light border-0">
+                                    <i class="bi bi-person-badge text-success"></i>
+                                </span>
+
+                                <input
                                     type="text"
+                                    name="nama_dekan"
+                                    class="form-control border-0 bg-light @error('nama_dekan') is-invalid @enderror"
                                     placeholder="Masukkan nama dekan"
-                                    class="form-control form-control-lg @error('nama_dekan') is-invalid @enderror"
                                     value="{{ old('nama_dekan', $fakultas->nama_dekan) }}"
                                     required
                                 >
-                                @error('nama_dekan')
-                                    <div class="invalid-feedback">
-                                        <i class="bi bi-exclamation-circle me-1"></i>{{ $message }}
-                                    </div>
-                                @else
-                                    <div class="form-text">
-                                        <i class="bi bi-info-circle me-1"></i>
-                                        Masukkan nama lengkap dekan fakultas. Maksimal 100 karakter.
-                                    </div>
-                                @enderror
+
                             </div>
-                            
-                            {{-- Informasi ID dan Timestamps (Readonly) --}}
-                            <div class="mb-4 p-3 bg-light rounded-3">
-                                <div class="row">
-                                    <div class="col-sm-6 mb-2 mb-sm-0">
-                                        <small class="text-muted d-block">
-                                            <i class="bi bi-hash"></i> ID Fakultas
+
+                            @error('nama_dekan')
+
+                                <small class="text-danger">
+                                    {{ $message }}
+                                </small>
+
+                            @else
+
+                                <small class="text-muted">
+                                    Gunakan nama lengkap beserta gelar
+                                </small>
+
+                            @enderror
+
+                        </div>
+
+                        {{-- METADATA --}}
+                        <div class="card bg-light border-0 rounded-4 mb-4">
+
+                            <div class="card-body">
+
+                                <div class="row g-4">
+
+                                    <div class="col-md-4">
+
+                                        <small class="text-muted d-block mb-1">
+                                            ID Fakultas
                                         </small>
-                                        <span class="fw-semibold text-primary">{{ $fakultas->id }}</span>
+
+                                        <div class="fw-bold text-primary">
+                                            #{{ $fakultas->id }}
+                                        </div>
+
                                     </div>
-                                    <div class="col-sm-6">
-                                        <small class="text-muted d-block">
-                                            <i class="bi bi-calendar-plus"></i> Dibuat Pada
+
+                                    <div class="col-md-4">
+
+                                        <small class="text-muted d-block mb-1">
+                                            Dibuat Pada
                                         </small>
-                                        <span class="fw-semibold">{{ $fakultas->created_at->format('d/m/Y H:i:s') }}</span>
+
+                                        <div class="fw-semibold">
+                                            {{ $fakultas->created_at->format('d M Y') }}
+                                        </div>
+
                                     </div>
-                                    @if(isset($fakultas->updated_at))
-                                    <div class="col-sm-6 mt-2">
-                                        <small class="text-muted d-block">
-                                            <i class="bi bi-calendar-check"></i> Terakhir Update
+
+                                    <div class="col-md-4">
+
+                                        <small class="text-muted d-block mb-1">
+                                            Terakhir Update
                                         </small>
-                                        <span class="fw-semibold">{{ $fakultas->updated_at->format('d/m/Y H:i:s') }}</span>
+
+                                        <div class="fw-semibold">
+                                            {{ $fakultas->updated_at->format('d M Y') }}
+                                        </div>
+
                                     </div>
-                                    @endif
+
                                 </div>
+
                             </div>
-                            
-                            {{-- TAMBAHAN: Info Peringatan --}}
-                            <div class="alert alert-warning py-2 mb-4" style="font-size: 13px;">
-                                <i class="bi bi-exclamation-triangle me-1"></i>
-                                <strong>Perhatian:</strong> Pastikan data yang diubah sudah benar.
+
+                        </div>
+
+                        {{-- INFO --}}
+                        <div class="alert alert-warning border-0 rounded-4">
+
+                            <div class="d-flex align-items-center">
+
+                                <i class="bi bi-exclamation-triangle-fill me-2"></i>
+
+                                <span>
+                                    Pastikan data yang diperbarui sudah benar sebelum disimpan.
+                                </span>
+
                             </div>
-                            
-                            {{-- Action Buttons --}}
-                            <div class="d-flex gap-2 justify-content-end">
-                                <a href="/fakultas" class="btn btn-light btn-lg px-4 border">
-                                    <i class="bi bi-x-circle me-1"></i>Batal
-                                </a>
-                                <button type="submit" class="btn btn-primary btn-lg px-4">
-                                    <i class="bi bi-check-circle me-1"></i>Simpan Perubahan
-                                </button>
-                            </div>
-                        </form>
-                    </div>
+
+                        </div>
+
+                        {{-- BUTTON --}}
+                        <div class="d-flex justify-content-end gap-2 mt-4">
+
+                            <a href="/fakultas"
+                               class="btn btn-light border rounded-pill px-4">
+
+                                <i class="bi bi-x-circle me-1"></i>
+                                Batal
+
+                            </a>
+
+                            <button type="submit"
+                                    class="btn btn-primary rounded-pill px-5 shadow-sm">
+
+                                <i class="bi bi-check-circle me-1"></i>
+                                Simpan Perubahan
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
                 </div>
+
             </div>
+
         </div>
+
     </div>
 
-    {{-- TAMBAHAN: Script untuk auto dismiss alert --}}
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Auto dismiss alerts after 5 seconds
-            setTimeout(function() {
-                let alerts = document.querySelectorAll('.alert');
-                alerts.forEach(function(alert) {
-                    let bsAlert = new bootstrap.Alert(alert);
-                    bsAlert.close();
-                });
-            }, 5000);
-        });
-    </script>
+</div>
+
+{{-- AUTO CLOSE ALERT --}}
+<script>
+
+    document.addEventListener('DOMContentLoaded', function () {
+
+        setTimeout(function () {
+
+            document.querySelectorAll('.alert').forEach(function(alert){
+
+                let bsAlert = new bootstrap.Alert(alert);
+
+                bsAlert.close();
+
+            });
+
+        }, 5000);
+
+    });
+
+</script>
+
 </x-layout>

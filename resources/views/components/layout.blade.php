@@ -1,252 +1,325 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sistem Informasi Fakultas & Prodi</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
-    integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-  @vite([])
-  <style>
-    /* Tambahan style untuk layout */
-    body {
-        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-        min-height: 100vh;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-    
-    .navbar {
-        box-shadow: 0 2px 20px rgba(0,0,0,0.1);
-        transition: all 0.3s ease;
-    }
-    
-    .navbar .nav-link {
-        transition: all 0.3s ease;
-        border-radius: 8px;
-        margin: 0 5px;
-    }
-    
-    .navbar .nav-link:hover {
-        background-color: rgba(255,255,255,0.1);
-        transform: translateY(-2px);
-    }
-    
-    .navbar .nav-link.active {
-        background-color: rgba(255,255,255,0.2);
-        border-bottom: 2px solid white;
-    }
-    
-    .navbar-toggler {
-        background-color: rgba(255,255,255,0.2);
-    }
-    
-    .navbar-toggler-icon {
-        filter: brightness(0) invert(1);
-    }
-    
-    /* Card styling */
-    .card {
-        border: none;
-        border-radius: 15px;
-        box-shadow: 0 5px 20px rgba(0,0,0,0.1);
-        transition: transform 0.3s ease;
-    }
-    
-    .card:hover {
-        transform: translateY(-5px);
-    }
-    
-    .card-header {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        border-radius: 15px 15px 0 0 !important;
-        padding: 20px;
-    }
-    
-    /* Button styling */
-    .btn-primary {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        border: none;
-        transition: all 0.3s ease;
-    }
-    
-    .btn-primary:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-    }
-    
-    /* Alert animation */
-    .alert {
-        border-radius: 10px;
-        animation: slideDown 0.5s ease;
-    }
-    
-    @keyframes slideDown {
-        from {
-            opacity: 0;
-            transform: translateY(-20px);
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Informasi Fakultas & Prodi</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icon -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    @vite([])
+
+    <style>
+        body{
+            background: #f4f7fe;
+            font-family: 'Segoe UI', sans-serif;
+            overflow-x: hidden;
         }
-        to {
-            opacity: 1;
-            transform: translateY(0);
+
+        /* Sidebar */
+        .sidebar{
+            width: 260px;
+            min-height: 100vh;
+            background: linear-gradient(180deg,#1e3c72,#2a5298);
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding-top: 20px;
+            box-shadow: 4px 0 20px rgba(0,0,0,0.1);
+            z-index: 1000;
         }
-    }
-    
-    /* Table styling */
-    .table {
-        border-radius: 10px;
-        overflow: hidden;
-    }
-    
-    .table thead th {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        border: none;
-        padding: 15px;
-    }
-    
-    .table tbody tr:hover {
-        background-color: rgba(102, 126, 234, 0.05);
-        transition: all 0.3s ease;
-    }
-    
-    /* Footer */
-    footer {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        color: white;
-        margin-top: auto;
-    }
-    
-    main {
-        min-height: calc(100vh - 150px);
-        padding-bottom: 30px;
-    }
-    
-    /* Form styling */
-    .form-control, .form-select {
-        border-radius: 10px;
-        border: 1px solid #e0e0e0;
-        transition: all 0.3s ease;
-    }
-    
-    .form-control:focus, .form-select:focus {
-        border-color: #667eea;
-        box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
-    }
-    
-    .form-label {
-        font-weight: 600;
-        color: #333;
-    }
-  </style>
+
+        .sidebar .brand{
+            color: white;
+            font-size: 1.4rem;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .sidebar .nav-link{
+            color: rgba(255,255,255,0.8);
+            padding: 14px 20px;
+            margin: 6px 14px;
+            border-radius: 12px;
+            transition: .3s;
+            font-weight: 500;
+        }
+
+        .sidebar .nav-link:hover{
+            background: rgba(255,255,255,0.15);
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .sidebar .nav-link.active{
+            background: white;
+            color: #2a5298;
+            font-weight: bold;
+        }
+
+        /* Main Content */
+        .main-content{
+            margin-left: 260px;
+            min-height: 100vh;
+        }
+
+        /* Topbar */
+        .topbar{
+            background: white;
+            padding: 18px 30px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+            position: sticky;
+            top: 0;
+            z-index: 999;
+        }
+
+        .topbar h4{
+            margin: 0;
+            font-weight: bold;
+            color: #2a5298;
+        }
+
+        /* Content */
+        .content-wrapper{
+            padding: 30px;
+        }
+
+        /* Card */
+        .card{
+            border: none;
+            border-radius: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+            overflow: hidden;
+        }
+
+        .card-header{
+            background: linear-gradient(135deg,#4facfe,#00f2fe);
+            color: white;
+            padding: 18px 24px;
+            border: none;
+        }
+
+        /* Button */
+        .btn-primary{
+            background: linear-gradient(135deg,#1e3c72,#2a5298);
+            border: none;
+            border-radius: 10px;
+            padding: 10px 18px;
+        }
+
+        .btn-primary:hover{
+            opacity: .9;
+            transform: translateY(-2px);
+        }
+
+        /* Table */
+        .table{
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .table thead{
+            background: #2a5298;
+            color: white;
+        }
+
+        .table th{
+            border: none;
+        }
+
+        .table td{
+            vertical-align: middle;
+        }
+
+        .table tbody tr:hover{
+            background: #f1f5ff;
+        }
+
+        /* Form */
+        .form-control,
+        .form-select{
+            border-radius: 10px;
+            padding: 10px;
+            border: 1px solid #dcdcdc;
+        }
+
+        .form-control:focus,
+        .form-select:focus{
+            border-color: #2a5298;
+            box-shadow: 0 0 0 .2rem rgba(42,82,152,.2);
+        }
+
+        /* Alert */
+        .alert{
+            border: none;
+            border-radius: 12px;
+        }
+
+        /* Footer */
+        footer{
+            text-align: center;
+            padding: 20px;
+            color: #777;
+        }
+
+        /* Responsive */
+        @media(max-width: 992px){
+
+            .sidebar{
+                width: 100%;
+                min-height: auto;
+                position: relative;
+            }
+
+            .main-content{
+                margin-left: 0;
+            }
+
+            .topbar{
+                position: relative;
+            }
+        }
+    </style>
 </head>
 
 <body>
-  <nav class="navbar navbar-expand-lg sticky-top" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
-    <div class="container">
-        <a class="navbar-brand text-white fw-bold fs-4" href="{{ url('/') }}">
-            <i class="bi bi-mortarboard-fill me-2"></i>
-            Sistem Informasi Fakultas & Prodi
-        </a>
-        <button class="navbar-toggler border-0 text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <a class="nav-link text-white {{ request()->is('fakultas') ? 'active fw-bold' : '' }}" 
-                       href="{{ url('/fakultas') }}">
-                        <i class="bi bi-building me-1"></i>Fakultas
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white {{ request()->is('fakultas/create') ? 'active fw-bold' : '' }}" 
-                       href="{{ url('/fakultas/create') }}">
-                        <i class="bi bi-plus-circle me-1"></i>Tambah Fakultas
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white {{ request()->is('prodi') ? 'active fw-bold' : '' }}" 
-                       href="{{ url('/prodi') }}">
-                        <i class="bi bi-book me-1"></i>Program Studi
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-white {{ request()->is('prodi/create') ? 'active fw-bold' : '' }}" 
-                       href="{{ url('/prodi/create') }}">
-                        <i class="bi bi-plus-circle me-1"></i>Tambah Prodi
-                    </a>
-                </li>
-            </ul>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+
+        <div class="brand">
+            <i class="bi bi-mortarboard-fill"></i>
+            SI Fakultas
         </div>
+
+        <ul class="nav flex-column">
+
+            <li class="nav-item">
+                <a href="{{ url('/fakultas') }}"
+                   class="nav-link {{ request()->is('fakultas') ? 'active' : '' }}">
+                    <i class="bi bi-building me-2"></i>
+                    Fakultas
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a href="{{ url('/fakultas/create') }}"
+                   class="nav-link {{ request()->is('fakultas/create') ? 'active' : '' }}">
+                    <i class="bi bi-plus-circle me-2"></i>
+                    Tambah Fakultas
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a href="{{ url('/prodi') }}"
+                   class="nav-link {{ request()->is('prodi') ? 'active' : '' }}">
+                    <i class="bi bi-book me-2"></i>
+                    Program Studi
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a href="{{ url('/prodi/create') }}"
+                   class="nav-link {{ request()->is('prodi/create') ? 'active' : '' }}">
+                    <i class="bi bi-plus-circle me-2"></i>
+                    Tambah Prodi
+                </a>
+            </li>
+
+        </ul>
     </div>
-  </nav>
 
-  <main>
-    <div class="container mt-4">
-        <!-- Alert Success - PERBAIKAN: typo 'sucess' menjadi 'success' -->
-        @if (session('success'))
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <i class="bi bi-check-circle-fill me-2"></i>
-                <strong>Sukses!</strong> {{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    <!-- Main -->
+    <div class="main-content">
+
+        <!-- Topbar -->
+        <div class="topbar d-flex justify-content-between align-items-center">
+            <h4>Dashboard Sistem Informasi</h4>
+
+            <div>
+                <span class="text-muted">
+                    <i class="bi bi-person-circle me-1"></i>
+                    Admin
+                </span>
             </div>
-        @endif
+        </div>
 
-        <!-- Alert Error -->
-        @if (session('error'))
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <i class="bi bi-exclamation-triangle-fill me-2"></i>
-                <strong>Error!</strong> {{ session('error') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        @endif
+        <!-- Content -->
+        <div class="content-wrapper">
 
-        <!-- Alert Validation Errors -->
-        @if ($errors->any())
-            <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                <i class="bi bi-exclamation-circle-fill me-2"></i>
-                <strong>Validasi Gagal!</strong>
-                <ul class="mb-0 mt-2">
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        @endif
+            <!-- Alert Success -->
+            @if (session('success'))
+                <div class="alert alert-success alert-dismissible fade show">
+                    <i class="bi bi-check-circle-fill me-2"></i>
+                    {{ session('success') }}
 
-        <!-- Konten Utama -->
-        {{ $slot }}
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="alert">
+                    </button>
+                </div>
+            @endif
+
+            <!-- Alert Error -->
+            @if (session('error'))
+                <div class="alert alert-danger alert-dismissible fade show">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                    {{ session('error') }}
+
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="alert">
+                    </button>
+                </div>
+            @endif
+
+            <!-- Validation -->
+            @if ($errors->any())
+                <div class="alert alert-warning alert-dismissible fade show">
+
+                    <strong>Terjadi Kesalahan:</strong>
+
+                    <ul class="mt-2 mb-0">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="alert">
+                    </button>
+                </div>
+            @endif
+
+            <!-- Slot -->
+            {{ $slot }}
+
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            © {{ date('Y') }} Sistem Informasi Fakultas & Prodi
+        </footer>
+
     </div>
-  </main>
 
-  <footer class="text-center py-4 mt-5">
-    <div class="container">
-        <p class="mb-0">
-            <i class="bi bi-c-circle me-1"></i> 
-            {{ date('Y') }} Sistem Informasi Fakultas & Prodi | 
-            Dibangun dengan <i class="bi bi-heart-fill text-danger"></i> menggunakan Laravel
-        </p>
-        <small class="opacity-75">Version 1.0.0</small>
-    </div>
-  </footer>
+    <!-- Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
-    crossorigin="anonymous"></script>
-  
-  <!-- Auto close alert setelah 5 detik -->
-  <script>
-    setTimeout(function() {
-        let alerts = document.querySelectorAll('.alert');
-        alerts.forEach(function(alert) {
-            let bsAlert = new bootstrap.Alert(alert);
-            bsAlert.close();
-        });
-    }, 5000);
-  </script>
+    <script>
+        setTimeout(() => {
+            document.querySelectorAll('.alert').forEach((alert) => {
+                let bsAlert = new bootstrap.Alert(alert);
+                bsAlert.close();
+            });
+        }, 5000);
+    </script>
+
 </body>
-
 </html>

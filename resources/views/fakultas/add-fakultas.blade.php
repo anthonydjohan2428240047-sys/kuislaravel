@@ -1,113 +1,188 @@
 <x-layout>
-  <div class="d-flex justify-content-center py-5">
-    <div class="card border-0 shadow-sm" style="width: 100%; max-width: 480px;">
-      <div class="card-body p-4">
-        <div class="mb-4">
-          <h5 class="fw-semibold mb-0">
-            <i class="bi bi-plus-circle text-primary me-2"></i>Tambah Fakultas
-          </h5>
-          <p class="text-muted mb-0 mt-1" style="font-size: 13px;">
-            Isi informasi fakultas baru di bawah ini.
-          </p>
+
+<div class="container py-5">
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-7 col-md-9">
+
+            <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+
+                <!-- Header -->
+                <div class="bg-primary bg-gradient text-white p-4">
+
+                    <div class="d-flex align-items-center">
+
+                        <div class="bg-white text-primary rounded-circle d-flex align-items-center justify-content-center"
+                             style="width:60px;height:60px;">
+                            <i class="bi bi-building-add fs-3"></i>
+                        </div>
+
+                        <div class="ms-3">
+                            <h3 class="fw-bold mb-1">Tambah Fakultas</h3>
+                            <p class="mb-0 opacity-75">
+                                Tambahkan data fakultas baru ke sistem
+                            </p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- Body -->
+                <div class="card-body p-5">
+
+                    {{-- Error Validation --}}
+                    @if ($errors->any())
+                        <div class="alert alert-danger border-0 shadow-sm rounded-3">
+
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="bi bi-exclamation-octagon-fill fs-4 me-2"></i>
+                                <strong>Terjadi Kesalahan</strong>
+                            </div>
+
+                            <ul class="mb-0 ps-3">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+
+                        </div>
+                    @endif
+
+                    {{-- Session Error --}}
+                    @if (session('error'))
+                        <div class="alert alert-danger border-0 shadow-sm rounded-3">
+
+                            <i class="bi bi-x-circle-fill me-2"></i>
+
+                            {{ session('error') }}
+
+                        </div>
+                    @endif
+
+                    <!-- Form -->
+                    <form action="/fakultas" method="POST">
+
+                        @csrf
+
+                        <!-- Nama Fakultas -->
+                        <div class="mb-4">
+
+                            <label class="form-label fw-semibold">
+                                Nama Fakultas
+                            </label>
+
+                            <div class="input-group">
+
+                                <span class="input-group-text bg-light border-end-0">
+                                    <i class="bi bi-building text-primary"></i>
+                                </span>
+
+                                <input
+                                    type="text"
+                                    name="nama_fakultas"
+                                    class="form-control border-start-0 ps-0 @error('nama_fakultas') is-invalid @enderror"
+                                    placeholder="Masukkan nama fakultas"
+                                    value="{{ old('nama_fakultas') }}"
+                                    required
+                                >
+
+                            </div>
+
+                            @error('nama_fakultas')
+                                <div class="text-danger small mt-1">
+                                    {{ $message }}
+                                </div>
+                            @else
+                                <small class="text-muted">
+                                    Maksimal 100 karakter dan harus unik
+                                </small>
+                            @enderror
+
+                        </div>
+
+                        <!-- Nama Dekan -->
+                        <div class="mb-4">
+
+                            <label class="form-label fw-semibold">
+                                Nama Dekan
+                            </label>
+
+                            <div class="input-group">
+
+                                <span class="input-group-text bg-light border-end-0">
+                                    <i class="bi bi-person-badge text-primary"></i>
+                                </span>
+
+                                <input
+                                    type="text"
+                                    name="nama_dekan"
+                                    class="form-control border-start-0 ps-0 @error('nama_dekan') is-invalid @enderror"
+                                    placeholder="Masukkan nama dekan"
+                                    value="{{ old('nama_dekan') }}"
+                                    required
+                                >
+
+                            </div>
+
+                            @error('nama_dekan')
+                                <div class="text-danger small mt-1">
+                                    {{ $message }}
+                                </div>
+                            @else
+                                <small class="text-muted">
+                                    Contoh: Prof. Dr. Ahmad, M.T.
+                                </small>
+                            @enderror
+
+                        </div>
+
+                        <!-- Info -->
+                        <div class="alert alert-primary border-0 rounded-3 d-flex align-items-start">
+
+                            <i class="bi bi-lightbulb-fill me-2 fs-5"></i>
+
+                            <div>
+                                <strong>Informasi</strong>
+                                <div class="small">
+                                    Pastikan data fakultas dan nama dekan sudah benar sebelum disimpan.
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- Button -->
+                        <div class="d-flex justify-content-between mt-4">
+
+                            <a href="/fakultas"
+                               class="btn btn-light border rounded-pill px-4">
+
+                                <i class="bi bi-arrow-left me-1"></i>
+                                Kembali
+
+                            </a>
+
+                            <button type="submit"
+                                    class="btn btn-primary rounded-pill px-5 shadow-sm">
+
+                                <i class="bi bi-save2 me-1"></i>
+                                Simpan Data
+
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
         </div>
-        <hr>
 
-        {{-- Menampilkan semua error validasi --}}
-        @if ($errors->any())
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <div class="d-flex align-items-center">
-                    <i class="bi bi-exclamation-triangle-fill me-2 fs-5"></i>
-                    <strong>Validasi Gagal!</strong>
-                </div>
-                <ul class="mb-0 mt-2">
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        @endif
-
-        {{-- Menampilkan error spesifik dari session --}}
-        @if (session('error'))
-            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <div class="d-flex align-items-center">
-                    <i class="bi bi-x-circle-fill me-2 fs-5"></i>
-                    <span>{{ session('error') }}</span>
-                </div>
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-        @endif
-        
-        <form action="/fakultas" method="POST">
-          @csrf
-
-          {{-- Field Nama Fakultas --}}
-          <div class="mb-3">
-            <label for="nama_fakultas" class="form-label small fw-medium text-secondary">
-              Nama Fakultas <span class="text-danger">*</span>
-            </label>
-            <input
-              id="nama_fakultas"
-              name="nama_fakultas"
-              type="text"
-              placeholder="contoh: Fakultas Teknik"
-              class="form-control @error('nama_fakultas') is-invalid @enderror"
-              value="{{ old('nama_fakultas') }}"
-              required
-            >
-            @error('nama_fakultas')
-                <div class="invalid-feedback">
-                    {{ $message }}
-                </div>
-            @else
-                <small class="text-muted" style="font-size: 11px;">
-                    <i class="bi bi-info-circle"></i> Maksimal 100 karakter, harus unik
-                </small>
-            @enderror
-          </div>
-
-          {{-- Field Nama Dekan --}}
-          <div class="mb-4">
-            <label for="nama_dekan" class="form-label small fw-medium text-secondary">
-              Nama Dekan <span class="text-danger">*</span>
-            </label>
-            <input
-              id="nama_dekan"
-              name="nama_dekan"
-              type="text"
-              placeholder="contoh: Prof. Dr. Budi Santoso, M.T."
-              class="form-control @error('nama_dekan') is-invalid @enderror"
-              value="{{ old('nama_dekan') }}"
-              required
-            >
-            @error('nama_dekan')
-                <div class="invalid-feedback">
-                    {{ $message }}
-                </div>
-            @else
-                <small class="text-muted" style="font-size: 11px;">
-                    <i class="bi bi-info-circle"></i> Maksimal 100 karakter
-                </small>
-            @enderror
-          </div>
-
-          {{-- Informasi tambahan --}}
-          <div class="alert alert-info py-2 mb-4" style="font-size: 12px; background-color: #e7f3ff;">
-            <i class="bi bi-lightbulb me-1"></i>
-            <strong>Tips:</strong> Pastikan data yang dimasukkan sudah benar sebelum menyimpan.
-          </div>
-
-          <div class="d-flex gap-2 justify-content-end">
-            <a href="/fakultas" class="btn btn-light border px-4">
-              <i class="bi bi-arrow-left me-1"></i>Batal
-            </a>
-            <button type="submit" class="btn btn-primary px-4">
-              <i class="bi bi-save me-1"></i>Simpan
-            </button>
-          </div>
-        </form>
-      </div>
     </div>
-  </div>
+
+</div>
+
 </x-layout>

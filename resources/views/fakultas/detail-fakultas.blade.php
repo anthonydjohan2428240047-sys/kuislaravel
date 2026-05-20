@@ -1,309 +1,442 @@
 <x-layout>
-    <div class="container mt-4">
-        {{-- Alert Messages --}}
-        @if (session('success'))
-            <div class="alert alert-success alert-dismissible fade show border-0 shadow-sm rounded-3 mb-4" role="alert">
-                <div class="d-flex align-items-center">
-                    <i class="bi bi-check-circle-fill me-2 fs-5"></i>
-                    <span>{{ session('success') }}</span>
-                    <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert"></button>
-                </div>
-            </div>
-        @endif
 
-        @if (session('error'))
-            <div class="alert alert-danger alert-dismissible fade show border-0 shadow-sm rounded-3 mb-4" role="alert">
-                <div class="d-flex align-items-center">
-                    <i class="bi bi-x-circle-fill me-2 fs-5"></i>
-                    <span>{{ session('error') }}</span>
-                    <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert"></button>
-                </div>
-            </div>
-        @endif
+<div class="container py-4">
 
-        <div class="card shadow-sm border-0 rounded-3">
-            <div class="card-header bg-white py-3 border-bottom-0">
-                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
-                    <div>
-                        <h5 class="mb-0 fw-bold text-primary">
-                            <i class="bi bi-info-circle me-2"></i>Detail Fakultas
-                        </h5>
-                        <p class="text-muted small mb-0 mt-1">Informasi lengkap data fakultas</p>
-                    </div>
-                    <div class="d-flex gap-2">
-                        <a href="/fakultas" class="btn btn-secondary btn-sm">
-                            <i class="bi bi-arrow-left me-1"></i>Kembali
-                        </a>
-                        <a href="/fakultas/{{ $fakultas->id }}/edit" class="btn btn-warning btn-sm">
-                            <i class="bi bi-pencil-square me-1"></i>Edit
-                        </a>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="card-body">
-                {{-- Header Info Card --}}
-                <div class="alert alert-primary bg-opacity-10 border-0 mb-4">
-                    <div class="d-flex align-items-center">
-                        <i class="bi bi-star-fill text-warning me-2"></i>
-                        <span class="fw-semibold">Informasi Detail Fakultas</span>
-                    </div>
-                </div>
-
-                <div class="row g-4">
-                    {{-- Nama Fakultas Card --}}
-                    <div class="col-md-6">
-                        <div class="card bg-light border-0 h-100 shadow-sm">
-                            <div class="card-body">
-                                <div class="d-flex align-items-center mb-3">
-                                    <div class="bg-primary bg-opacity-10 rounded-circle p-3 me-3">
-                                        <i class="bi bi-building fs-4 text-primary"></i>
-                                    </div>
-                                    <div>
-                                        <small class="text-muted d-block">Nama Fakultas</small>
-                                        <h4 class="mb-0 fw-bold">{{ $fakultas->nama_fakultas }}</h4>
-                                    </div>
-                                </div>
-                                <hr>
-                                <div class="mt-2">
-                                    <small class="text-muted">
-                                        <i class="bi bi-info-circle me-1"></i>
-                                        Fakultas adalah unit organisasi di perguruan tinggi yang mengelola beberapa program studi.
-                                    </small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    {{-- Nama Dekan Card --}}
-                    <div class="col-md-6">
-                        <div class="card bg-light border-0 h-100 shadow-sm">
-                            <div class="card-body">
-                                <div class="d-flex align-items-center mb-3">
-                                    <div class="bg-success bg-opacity-10 rounded-circle p-3 me-3">
-                                        <i class="bi bi-person-badge fs-4 text-success"></i>
-                                    </div>
-                                    <div>
-                                        <small class="text-muted d-block">Nama Dekan</small>
-                                        <h4 class="mb-0 fw-bold">{{ $fakultas->nama_dekan }}</h4>
-                                    </div>
-                                </div>
-                                <hr>
-                                <div class="mt-2">
-                                    <small class="text-muted">
-                                        <i class="bi bi-person-check me-1"></i>
-                                        Dekan adalah pimpinan tertinggi di tingkat fakultas.
-                                    </small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                {{-- Program Studi Terkait --}}
-                @if(isset($fakultas->prodis) && $fakultas->prodis->count() > 0)
-                <div class="row mt-4">
-                    <div class="col-12">
-                        <div class="card border-0 shadow-sm">
-                            <div class="card-header bg-white py-3">
-                                <h6 class="mb-0 fw-bold">
-                                    <i class="bi bi-book me-2 text-primary"></i>Daftar Program Studi
-                                </h6>
-                            </div>
-                            <div class="card-body p-0">
-                                <div class="table-responsive">
-                                    <table class="table table-hover align-middle mb-0">
-                                        <thead class="bg-light">
-                                            <tr>
-                                                <th class="ps-3">No</th>
-                                                <th>Alias</th>
-                                                <th>Nama Program Studi</th>
-                                                <th>Ketua Program Studi</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach($fakultas->prodis as $key => $prodi)
-                                            <tr>
-                                                <td class="ps-3">{{ $key + 1 }}</td>
-                                                <td>
-                                                    <span class="badge bg-info text-white">{{ $prodi->alias_prodi }}</span>
-                                                </td>
-                                                <td>{{ $prodi->nama_prodi }}</td>
-                                                <td>{{ $prodi->nama_kaprodi }}</td>
-                                            </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                @else
-                <div class="row mt-4">
-                    <div class="col-12">
-                        <div class="alert alert-info border-0">
-                            <div class="d-flex align-items-center">
-                                <i class="bi bi-info-circle-fill me-2"></i>
-                                <span>Belum ada program studi yang terdaftar di fakultas ini.</span>
-                                <a href="/prodi/create" class="btn btn-sm btn-link ms-auto">
-                                    <i class="bi bi-plus-circle me-1"></i>Tambah Prodi
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                @endif
-                
-                {{-- Informasi Metadata --}}
-                <div class="row mt-4">
-                    <div class="col-12">
-                        <div class="card bg-light border-0">
-                            <div class="card-body">
-                                <div class="row align-items-center">
-                                    <div class="col-md-4">
-                                        <div class="d-flex align-items-center">
-                                            <div class="bg-info bg-opacity-10 rounded-circle p-2 me-3">
-                                                <i class="bi bi-hash fs-5 text-info"></i>
-                                            </div>
-                                            <div>
-                                                <small class="text-muted d-block">ID Fakultas</small>
-                                                <span class="fw-bold">{{ $fakultas->id }}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="d-flex align-items-center">
-                                            <div class="bg-warning bg-opacity-10 rounded-circle p-2 me-3">
-                                                <i class="bi bi-calendar-plus fs-5 text-warning"></i>
-                                            </div>
-                                            <div>
-                                                <small class="text-muted d-block">Dibuat Pada</small>
-                                                <span class="fw-bold">{{ $fakultas->created_at->format('d/m/Y H:i:s') }}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="d-flex align-items-center">
-                                            <div class="bg-success bg-opacity-10 rounded-circle p-2 me-3">
-                                                <i class="bi bi-calendar-check fs-5 text-success"></i>
-                                            </div>
-                                            <div>
-                                                <small class="text-muted d-block">Terakhir Update</small>
-                                                <span class="fw-bold">{{ $fakultas->updated_at->format('d/m/Y H:i:s') }}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                {{-- Statistik Singkat --}}
-                <div class="row mt-4">
-                    <div class="col-md-4">
-                        <div class="text-center p-3 bg-primary bg-opacity-10 rounded-3">
-                            <i class="bi bi-building fs-3 text-primary"></i>
-                            <h3 class="mb-0 mt-2">{{ \App\Models\Fakultas::count() }}</h3>
-                            <small class="text-muted">Total Fakultas</small>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="text-center p-3 bg-success bg-opacity-10 rounded-3">
-                            <i class="bi bi-book fs-3 text-success"></i>
-                            <h3 class="mb-0 mt-2">{{ isset($fakultas->prodis) ? $fakultas->prodis->count() : 0 }}</h3>
-                            <small class="text-muted">Program Studi</small>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="text-center p-3 bg-info bg-opacity-10 rounded-3">
-                            <i class="bi bi-people fs-3 text-info"></i>
-                            <h3 class="mb-0 mt-2">{{ isset($fakultas->prodis) ? $fakultas->prodis->count() * 2 : 0 }}</h3>
-                            <small class="text-muted">Dosen & Staff</small>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            {{-- Card Footer dengan Aksi Hapus --}}
-            <div class="card-footer bg-white border-top-0 py-3">
-                <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
-                    <small class="text-muted">
-                        <i class="bi bi-database me-1"></i>Sistem Informasi Fakultas v1.0
-                    </small>
-                    <div class="d-flex gap-2">
-                        <button type="button" 
-                                class="btn btn-danger btn-sm"
-                                data-bs-toggle="modal"
-                                data-bs-target="#deleteModal">
-                            <i class="bi bi-trash me-1"></i>Hapus Fakultas
-                        </button>
-                    </div>
-                </div>
-            </div>
+    {{-- ALERT --}}
+    @if(session('success'))
+        <div class="alert alert-success border-0 shadow-sm rounded-4">
+            <i class="bi bi-check-circle-fill me-2"></i>
+            {{ session('success') }}
         </div>
+    @endif
+
+    @if(session('error'))
+        <div class="alert alert-danger border-0 shadow-sm rounded-4">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            {{ session('error') }}
+        </div>
+    @endif
+
+    {{-- HERO --}}
+    <div class="card border-0 shadow-lg rounded-4 overflow-hidden mb-4">
+
+        <div class="bg-primary bg-gradient p-5 text-white">
+
+            <div class="row align-items-center">
+
+                <div class="col-lg-8">
+
+                    <div class="d-flex align-items-center">
+
+                        <div class="bg-white text-primary rounded-circle
+                                    d-flex align-items-center justify-content-center"
+                             style="width:90px;height:90px;">
+
+                            <i class="bi bi-building fs-1"></i>
+
+                        </div>
+
+                        <div class="ms-4">
+
+                            <h2 class="fw-bold mb-1">
+                                {{ $fakultas->nama_fakultas }}
+                            </h2>
+
+                            <p class="mb-2 opacity-75">
+                                Sistem Informasi Fakultas
+                            </p>
+
+                            <span class="badge bg-light text-primary px-3 py-2 rounded-pill">
+                                <i class="bi bi-person-badge me-1"></i>
+                                {{ $fakultas->nama_dekan }}
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="col-lg-4 text-lg-end mt-4 mt-lg-0">
+
+                    <a href="/fakultas"
+                       class="btn btn-light rounded-pill px-4 me-2">
+
+                        <i class="bi bi-arrow-left me-1"></i>
+                        Kembali
+
+                    </a>
+
+                    <a href="/fakultas/{{ $fakultas->id }}/edit"
+                       class="btn btn-warning rounded-pill px-4">
+
+                        <i class="bi bi-pencil-square me-1"></i>
+                        Edit
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
     </div>
 
-    {{-- Modal Konfirmasi Hapus --}}
-    <div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content border-0 shadow rounded-3">
-                <div class="modal-body text-center p-5">
-                    <div class="bg-danger bg-opacity-10 rounded-circle d-inline-flex
-                                align-items-center justify-content-center mb-4"
-                         style="width:72px; height:72px;">
-                        <i class="bi bi-exclamation-triangle fs-2 text-danger"></i>
+    {{-- STATISTIK --}}
+    <div class="row g-4 mb-4">
+
+        <div class="col-md-4">
+
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+
+                <div class="card-body text-center p-4">
+
+                    <div class="bg-primary bg-opacity-10 rounded-circle
+                                mx-auto d-flex align-items-center justify-content-center mb-3"
+                         style="width:70px;height:70px;">
+
+                        <i class="bi bi-book fs-2 text-primary"></i>
+
                     </div>
-                    
-                    <h5 class="fw-bold mb-2">Hapus Fakultas?</h5>
-                    <p class="text-muted mb-1">Anda akan menghapus fakultas:</p>
-                    <p class="fw-semibold text-danger mb-4 fs-5">{{ $fakultas->nama_fakultas }}</p>
-                    
-                    @if(isset($fakultas->prodis) && $fakultas->prodis->count() > 0)
-                        <div class="alert alert-warning py-2">
-                            <i class="bi bi-exclamation-circle me-1"></i>
-                            <small>Fakultas ini memiliki {{ $fakultas->prodis->count() }} program studi yang akan ikut terhapus!</small>
-                        </div>
-                    @endif
-                    
-                    <p class="text-muted small">
-                        Tindakan ini <strong>tidak dapat dibatalkan</strong> dan
-                        semua data terkait akan ikut terhapus.
+
+                    <h2 class="fw-bold">
+                        {{ isset($fakultas->prodis) ? $fakultas->prodis->count() : 0 }}
+                    </h2>
+
+                    <p class="text-muted mb-0">
+                        Program Studi
                     </p>
 
-                    <div class="d-flex gap-2 justify-content-center mt-4">
-                        <button type="button"
-                                class="btn btn-light border px-4"
-                                data-bs-dismiss="modal">
-                            <i class="bi bi-x-lg me-1"></i>Batal
-                        </button>
-                        <form action="/fakultas/{{ $fakultas->id }}" method="POST" class="d-inline">
-                            @csrf
-                            @method("DELETE")
-                            <button type="submit" class="btn btn-danger px-4">
-                                <i class="bi bi-trash me-1"></i>Ya, Hapus
-                            </button>
-                        </form>
-                    </div>
                 </div>
+
             </div>
+
         </div>
+
+        <div class="col-md-4">
+
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+
+                <div class="card-body text-center p-4">
+
+                    <div class="bg-success bg-opacity-10 rounded-circle
+                                mx-auto d-flex align-items-center justify-content-center mb-3"
+                         style="width:70px;height:70px;">
+
+                        <i class="bi bi-people fs-2 text-success"></i>
+
+                    </div>
+
+                    <h2 class="fw-bold">
+                        {{ isset($fakultas->prodis) ? $fakultas->prodis->count() * 2 : 0 }}
+                    </h2>
+
+                    <p class="text-muted mb-0">
+                        Dosen & Staff
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-4">
+
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+
+                <div class="card-body text-center p-4">
+
+                    <div class="bg-warning bg-opacity-10 rounded-circle
+                                mx-auto d-flex align-items-center justify-content-center mb-3"
+                         style="width:70px;height:70px;">
+
+                        <i class="bi bi-building fs-2 text-warning"></i>
+
+                    </div>
+
+                    <h2 class="fw-bold">
+                        {{ \App\Models\Fakultas::count() }}
+                    </h2>
+
+                    <p class="text-muted mb-0">
+                        Total Fakultas
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
     </div>
 
-    {{-- Script untuk Tooltip dan Auto Dismiss --}}
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Auto dismiss alerts after 5 seconds
-            setTimeout(function() {
-                let alerts = document.querySelectorAll('.alert');
-                alerts.forEach(function(alert) {
-                    let bsAlert = bootstrap.Alert.getInstance(alert);
-                    if (bsAlert) {
-                        bsAlert.close();
-                    }
-                });
-            }, 5000);
-        });
-    </script>
+    {{-- DETAIL --}}
+    <div class="row g-4 mb-4">
+
+        <div class="col-lg-6">
+
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+
+                <div class="card-body p-4">
+
+                    <h5 class="fw-bold mb-4">
+                        <i class="bi bi-info-circle text-primary me-2"></i>
+                        Informasi Fakultas
+                    </h5>
+
+                    <div class="mb-4">
+
+                        <small class="text-muted d-block mb-1">
+                            Nama Fakultas
+                        </small>
+
+                        <h4 class="fw-bold">
+                            {{ $fakultas->nama_fakultas }}
+                        </h4>
+
+                    </div>
+
+                    <div>
+
+                        <small class="text-muted d-block mb-1">
+                            Nama Dekan
+                        </small>
+
+                        <h5 class="fw-semibold">
+                            {{ $fakultas->nama_dekan }}
+                        </h5>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-6">
+
+            <div class="card border-0 shadow-sm rounded-4 h-100">
+
+                <div class="card-body p-4">
+
+                    <h5 class="fw-bold mb-4">
+                        <i class="bi bi-clock-history text-success me-2"></i>
+                        Metadata
+                    </h5>
+
+                    <div class="mb-4">
+
+                        <small class="text-muted d-block mb-1">
+                            Dibuat Pada
+                        </small>
+
+                        <div class="fw-semibold">
+                            {{ $fakultas->created_at->format('d M Y - H:i') }}
+                        </div>
+
+                    </div>
+
+                    <div>
+
+                        <small class="text-muted d-block mb-1">
+                            Terakhir Update
+                        </small>
+
+                        <div class="fw-semibold">
+                            {{ $fakultas->updated_at->format('d M Y - H:i') }}
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    {{-- TABLE PRODI --}}
+    <div class="card border-0 shadow-sm rounded-4 overflow-hidden mb-4">
+
+        <div class="card-header bg-white border-0 p-4">
+
+            <div class="d-flex justify-content-between align-items-center">
+
+                <div>
+
+                    <h5 class="fw-bold mb-1">
+                        <i class="bi bi-book text-primary me-2"></i>
+                        Program Studi
+                    </h5>
+
+                    <small class="text-muted">
+                        Daftar program studi dalam fakultas
+                    </small>
+
+                </div>
+
+                <a href="/prodi/create"
+                   class="btn btn-primary rounded-pill">
+
+                    <i class="bi bi-plus-circle me-1"></i>
+                    Tambah Prodi
+
+                </a>
+
+            </div>
+
+        </div>
+
+        <div class="card-body p-0">
+
+            @if(isset($fakultas->prodis) && $fakultas->prodis->count() > 0)
+
+                <div class="table-responsive">
+
+                    <table class="table align-middle mb-0">
+
+                        <thead class="table-light">
+
+                            <tr>
+                                <th>No</th>
+                                <th>Alias</th>
+                                <th>Program Studi</th>
+                                <th>Kaprodi</th>
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            @foreach($fakultas->prodis as $key => $prodi)
+
+                                <tr>
+
+                                    <td>{{ $key + 1 }}</td>
+
+                                    <td>
+                                        <span class="badge bg-primary rounded-pill px-3">
+                                            {{ $prodi->alias_prodi }}
+                                        </span>
+                                    </td>
+
+                                    <td class="fw-semibold">
+                                        {{ $prodi->nama_prodi }}
+                                    </td>
+
+                                    <td>
+                                        {{ $prodi->nama_kaprodi }}
+                                    </td>
+
+                                </tr>
+
+                            @endforeach
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            @else
+
+                <div class="text-center py-5">
+
+                    <i class="bi bi-journal-x fs-1 text-muted"></i>
+
+                    <h5 class="mt-3">
+                        Belum Ada Program Studi
+                    </h5>
+
+                    <p class="text-muted">
+                        Tambahkan program studi untuk fakultas ini
+                    </p>
+
+                </div>
+
+            @endif
+
+        </div>
+
+    </div>
+
+    {{-- DELETE --}}
+    <div class="text-end">
+
+        <button class="btn btn-danger rounded-pill px-4"
+                data-bs-toggle="modal"
+                data-bs-target="#deleteModal">
+
+            <i class="bi bi-trash me-1"></i>
+            Hapus Fakultas
+
+        </button>
+
+    </div>
+
+</div>
+
+{{-- MODAL DELETE --}}
+<div class="modal fade" id="deleteModal" tabindex="-1">
+
+    <div class="modal-dialog modal-dialog-centered">
+
+        <div class="modal-content border-0 rounded-4 shadow">
+
+            <div class="modal-body text-center p-5">
+
+                <div class="bg-danger bg-opacity-10 rounded-circle
+                            d-inline-flex align-items-center justify-content-center mb-4"
+                     style="width:90px;height:90px;">
+
+                    <i class="bi bi-trash fs-1 text-danger"></i>
+
+                </div>
+
+                <h4 class="fw-bold">
+                    Hapus Fakultas?
+                </h4>
+
+                <p class="text-muted mt-3">
+                    Data fakultas akan dihapus permanen dan tidak dapat dikembalikan.
+                </p>
+
+                <div class="d-flex justify-content-center gap-2 mt-4">
+
+                    <button class="btn btn-light border rounded-pill px-4"
+                            data-bs-dismiss="modal">
+
+                        Batal
+
+                    </button>
+
+                    <form action="/fakultas/{{ $fakultas->id }}"
+                          method="POST">
+
+                        @csrf
+                        @method('DELETE')
+
+                        <button type="submit"
+                                class="btn btn-danger rounded-pill px-4">
+
+                            Ya, Hapus
+
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
 </x-layout>
