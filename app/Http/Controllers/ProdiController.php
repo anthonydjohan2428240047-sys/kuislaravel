@@ -18,8 +18,8 @@ class ProdiController extends Controller
 
     public function create(): View
     {
-        $fakultas = Fakultas::all();
-        return view('prodi.create', compact('fakultas'));
+        $listFakultas = Fakultas::all();
+        return view('prodi.create', compact('listFakultas'));
     }
 
     public function store(Request $request): RedirectResponse

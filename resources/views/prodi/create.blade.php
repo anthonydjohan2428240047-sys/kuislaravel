@@ -44,6 +44,8 @@
                         <form action="{{ route('prodi.store') }}" method="POST">
                             @csrf
 
+                           
+
                             {{-- Fakultas --}}
                             <div class="mb-4">
                                 <label for="fakultas_id" class="form-label fw-semibold">
@@ -59,7 +61,7 @@
                                 >
                                     <option value="">-- Pilih Fakultas --</option>
 
-                                    @foreach($fakultas as $f)
+                                    @foreach($listFakultas as $f)
                                         <option value="{{ $f->id }}"
                                             {{ old('fakultas_id') == $f->id ? 'selected' : '' }}>
                                             {{ $f->nama_fakultas }}
