@@ -41,7 +41,7 @@
                             </div>
                         @endif
 
-                        <form action="{{ route('prodi.store') }}" method="POST">
+                        <form action="{{ route('prodi.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
 
                            
@@ -105,6 +105,37 @@
                                     </div>
                                 @enderror
                             </div>
+
+                             {{-- photo prodi--}}
+                            <div class="mb-4">
+                                <label for="photo_kaprodi" class="form-label fw-semibold">
+                                    <i class="bi bi-tag text-success me-1"></i>
+                                    Photo Kaprodi
+                                </label>
+
+                                <div class="input-group input-group-lg">
+                                    <span class="input-group-text bg-light">
+                                        <i class="bi bi-bookmark"></i>
+                                    </span>
+
+                                    <input
+                                        type="file"
+                                        name="photo_kaprodi"
+                                        id="photo_kaprodi"
+                                        class="form-control rounded-end @error('photo_kaprodi') is-invalid @enderror"
+                                        value="{{ old('photo_kaprodi') }}"
+                                        placeholder=" Pilih photo kaprodi"
+                                        required
+                                    >
+                                </div>
+
+                                @error('alias_prodi')
+                                    <div class="invalid-feedback d-block">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+
 
                             {{-- Nama Prodi --}}
                             <div class="mb-4">

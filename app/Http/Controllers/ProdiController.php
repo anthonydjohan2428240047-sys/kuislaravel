@@ -7,6 +7,9 @@ use App\Models\Fakultas;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Storage;
+use Symfony\Component\Mime\MimeTypes;
+
 
 class ProdiController extends Controller
 {
@@ -24,11 +27,12 @@ class ProdiController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
-        $request->validate([
+        $validated = $request->validate([
             'nama_prodi' => 'required|string|max:100|unique:prodis',
             'nama_kaprodi' => 'required|string|max:100',
             'alias_prodi' => 'required|string|max:10|unique:prodis',
-            'fakultas_id' => 'required|exists:fakultas,id'
+            'fakultas_id' => 'required|exists:fakultas,id',
+             'photo_kaprodi' => 'required|MimeTypes:image/*'
         ], [
             'nama_prodi.required' => 'Nama prodi wajib diisi!',
             'nama_prodi.unique' => 'Nama prodi sudah terdaftar!',
@@ -37,7 +41,10 @@ class ProdiController extends Controller
             'alias_prodi.unique' => 'Alias prodi sudah terdaftar!',
             'fakultas_id.required' => 'Fakultas wajib dipilih!'
         ]);
-
+         $photoKaprodi = Storage::disk("public")->putFile('prodi',$request->file('photo_kaprodi'));
+        $validated['photo_kaprodi']=$photoKaprodi;
+        Prodi::create($validated);
+        
         try {
             Prodi::create($request->all());
             return redirect()->route('prodi.index')
@@ -66,7 +73,8 @@ class ProdiController extends Controller
             'nama_prodi' => 'required|string|max:100|unique:prodis,nama_prodi,' . $prodi->id,
             'nama_kaprodi' => 'required|string|max:100',
             'alias_prodi' => 'required|string|max:10|unique:prodis,alias_prodi,' . $prodi->id,
-            'fakultas_id' => 'required|exists:fakultas,id'
+            'fakultas_id' => 'required|exists:fakultas,id',
+            
         ], [
             'nama_prodi.required' => 'Nama prodi wajib diisi!',
             'nama_prodi.unique' => 'Nama prodi sudah terdaftar!',
@@ -75,7 +83,7 @@ class ProdiController extends Controller
             'alias_prodi.unique' => 'Alias prodi sudah terdaftar!',
             'fakultas_id.required' => 'Fakultas wajib dipilih!'
         ]);
-
+       
         try {
             $prodi->update($request->all());
             return redirect()->route('prodi.index')
